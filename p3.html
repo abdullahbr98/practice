@@ -43,20 +43,34 @@
     </div>
 
     <script>
-        const breadcrumbsArray = [];
+        const breadcrumbsArray = [""];
+        var random = Math.floor(Math.random() * 100000);
         var mainFolderName = "Folder";
+        var directoryTree = {
+            "/Folder":`<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`
+        };
+
         const breadcrumbsArrayPop = () => {
             breadcrumbsArray.pop();
             element = document.getElementById("breadcrumbs");
             element.innerHTML = breadcrumbsArray;
+            const folderElement = document.getElementById("folderName");
+            folderElement.innerText = breadcrumbsArray[breadcrumbsArray.length - 1];
+            clearDirectory();
         }
 
         const createFolder = () => {
             const singleFolder = document.getElementById("singleFolder");
-            var random = Math.floor(Math.random() * 100000);
             const createDiv = document.createElement("div");
-            createDiv.innerHTML = (`<div style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`)
+            createDiv.innerHTML = (`<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`)
             singleFolder.appendChild(createDiv);
+        }
+
+        const clearDirectory = () =>{
+            const directory = document.querySelectorAll(".directoryFolder");
+            for (let index = 0; index < directory.length; index++) {
+                directory[index].remove();
+            }
         }
 
         const deleteFolder = (id) => {
@@ -75,6 +89,9 @@
             console.log("before inner Text", folderName.innerText);
             console.log("before inner HTML", folderName.innerHTML);
             folderName.innerText = element.value;
+            breadcrumbsArray[(breadcrumbsArray.length)-1] = "/" + element.value;
+            breadCrumbElement = document.getElementById("breadcrumbs");
+            breadCrumbElement.innerHTML = breadcrumbsArray;
             console.log("after inner TEXT", folderName.innerText);
             console.log("after inner HTML", folderName.innerHTML);
         }
@@ -89,11 +106,26 @@
         }
 
 
+        const populateDirectory=(tagId)=>{
+            singleFolder = document.getElementById(tagId);
+            singleFolder.innerHTML = breadcrumbsArray[tagId];
+        }
+
         const breadcrumbsMove = () => {
             breadcrumbsArray.push("/Folder");
             element = document.getElementById("breadcrumbs");
             element.innerHTML = breadcrumbsArray;
+            const folderElement = document.getElementById("folderName");
+            folderElement.innerText = breadcrumbsArray[breadcrumbsArray.length - 1];
+            clearDirectory();
         }
+
+        const directoryTreeFunctionAdder = ()=>{
+            directoryTree["/Folder"] = `<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`;
+        }
+
+
+
     </script>
 
 
