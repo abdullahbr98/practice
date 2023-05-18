@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>File Directory</title>
 </head>
 
 <body>
@@ -47,7 +47,7 @@
         var random = Math.floor(Math.random() * 100000);
         var mainFolderName = "Folder";
         var directoryTree = {
-            "/Folder":`<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`
+            "/Folder": `<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`
         };
 
         const breadcrumbsArrayPop = () => {
@@ -57,16 +57,31 @@
             const folderElement = document.getElementById("folderName");
             folderElement.innerText = breadcrumbsArray[breadcrumbsArray.length - 1];
             clearDirectory();
+            loadDirectory();
         }
 
         const createFolder = () => {
-            const singleFolder = document.getElementById("singleFolder");
-            const createDiv = document.createElement("div");
+            let singleFolder = document.getElementById("singleFolder");
+            let createDiv = document.createElement("div");
             createDiv.innerHTML = (`<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`)
+
+            //I will get the innerText and then use it as a key in directoryTree and add that 
+            const element = document.getElementById("folderName");
+            const key = element.innerText;
+            console.log(element);
+            console.log(key);
+            if (!directoryTree[key]) {
+                directoryTree[key] = [`<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`];
+            }
+            else {
+                let thisArray = directoryTree[key];
+                thisArray[thisArray.length] = `<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`;
+                directoryTree[key] = thisArray;
+            }
             singleFolder.appendChild(createDiv);
         }
 
-        const clearDirectory = () =>{
+        const clearDirectory = () => {
             const directory = document.querySelectorAll(".directoryFolder");
             for (let index = 0; index < directory.length; index++) {
                 directory[index].remove();
@@ -76,6 +91,17 @@
         const deleteFolder = (id) => {
             const element = document.getElementById(id);
             element.remove();
+        }
+
+        const loadDirectory = () => {
+            const folderName = document.getElementById("folderName");
+            const directoryFile = document.getElementById("folderDirectory");
+            console.log("new:",folderName);
+            console.log(directoryTree[folderName.innerText]);
+            if (directoryTree[folderName.innerText]) {
+                console.log("new:" , directoryTree[folderName.innerText]);
+                directoryFile.innerHTML = directoryTree[folderName.innerText];
+            }
         }
 
         const renameFolderHide = (tagId) => {
@@ -89,11 +115,13 @@
             console.log("before inner Text", folderName.innerText);
             console.log("before inner HTML", folderName.innerHTML);
             folderName.innerText = element.value;
-            breadcrumbsArray[(breadcrumbsArray.length)-1] = "/" + element.value;
+            breadcrumbsArray[(breadcrumbsArray.length) - 1] = element.value;
             breadCrumbElement = document.getElementById("breadcrumbs");
             breadCrumbElement.innerHTML = breadcrumbsArray;
             console.log("after inner TEXT", folderName.innerText);
             console.log("after inner HTML", folderName.innerHTML);
+            clearDirectory();
+            loadDirectory();
         }
 
         const renameFolderShow = (tagId) => {
@@ -106,22 +134,24 @@
         }
 
 
-        const populateDirectory=(tagId)=>{
+        const populateDirectory = (tagId) => {
             singleFolder = document.getElementById(tagId);
             singleFolder.innerHTML = breadcrumbsArray[tagId];
         }
 
         const breadcrumbsMove = () => {
-            breadcrumbsArray.push("/Folder");
+            breadcrumbsArray.push("Folder");
             element = document.getElementById("breadcrumbs");
             element.innerHTML = breadcrumbsArray;
             const folderElement = document.getElementById("folderName");
             folderElement.innerText = breadcrumbsArray[breadcrumbsArray.length - 1];
             clearDirectory();
+            console.log("directory Cleared");
+            loadDirectory();
         }
 
-        const directoryTreeFunctionAdder = ()=>{
-            directoryTree["/Folder"] = `<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`;
+        const directoryTreeFunctionAdder = () => {
+
         }
 
 
