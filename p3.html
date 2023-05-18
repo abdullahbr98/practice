@@ -1,0 +1,102 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section id="breadcrumbs">
+
+    </section>
+    <div style="display: flex;">
+        <div style="cursor: pointer; color:white; background-color: black; padding: 10px; margin-right: 10px;"
+            onclick="breadcrumbsArrayPop()"> Back
+        </div>
+        <div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"
+            onclick="breadcrumbsMove()">
+        </div>
+
+        <input style="display:none;" id="nameChanger">
+        <div style="display: none;" id="ok" onclick="renameFolderHide(nameChanger)">ok
+        </div></input>
+        <div style="margin-left: 10px; padding: 10px;" id="folderName">
+            Folder
+        </div>
+        <div style="cursor: pointer; padding: 10px; background-color: lightblue; margin-left: 10px;"
+            onclick="renameFolderShow(nameChanger)" id="folder">
+            Rename File
+        </div>
+        <div style="cursor: pointer; background-color: lightcoral; margin-left: 10px; padding: 10px;"
+            onclick="createFolder()">
+            Create Folder
+        </div>
+    </div>
+    <div style="padding: 20px;" id="folderDirectory">
+        <div>
+            <div style="display: flex;" id="singleFolder">
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const breadcrumbsArray = [];
+        var mainFolderName = "Folder";
+        const breadcrumbsArrayPop = () => {
+            breadcrumbsArray.pop();
+            element = document.getElementById("breadcrumbs");
+            element.innerHTML = breadcrumbsArray;
+        }
+
+        const createFolder = () => {
+            const singleFolder = document.getElementById("singleFolder");
+            var random = Math.floor(Math.random() * 100000);
+            const createDiv = document.createElement("div");
+            createDiv.innerHTML = (`<div style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`)
+            singleFolder.appendChild(createDiv);
+        }
+
+        const deleteFolder = (id) => {
+            const element = document.getElementById(id);
+            element.remove();
+        }
+
+        const renameFolderHide = (tagId) => {
+            const id = tagId.id;
+            const element = document.getElementById(id);
+            element.style = "display:none";
+            const buttonStyle = document.getElementById("ok");
+            buttonStyle.style = "display:none";
+            console.log(element.value);
+            const folderName = document.getElementById("folderName");
+            console.log("before inner Text", folderName.innerText);
+            console.log("before inner HTML", folderName.innerHTML);
+            folderName.innerText = element.value;
+            console.log("after inner TEXT", folderName.innerText);
+            console.log("after inner HTML", folderName.innerHTML);
+        }
+
+        const renameFolderShow = (tagId) => {
+            const id = tagId.id;
+            const element = document.getElementById(id);
+            element.style = "display:block";
+            console.log(element);
+            const buttonStyle = document.getElementById("ok");
+            buttonStyle.style = "background-color: lightblue; cursor: pointer; display: block;";
+        }
+
+
+        const breadcrumbsMove = () => {
+            breadcrumbsArray.push("/Folder");
+            element = document.getElementById("breadcrumbs");
+            element.innerHTML = breadcrumbsArray;
+        }
+    </script>
+
+
+</body>
+
+</html>

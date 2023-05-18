@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="buttonGroup">
+
+    </div>
+    <script>
+        //arrays 
+        let arr = [
+            {a: 3, b: "A"},
+            {a: 4, b: {c: [1, 2, 5]}},
+            {a: 8, b: {c: [1, 2, 3]}},
+            {a: 1, b: {c: [1, 2, 3]}},
+            {a: 5, b: {c: [1, 2, 3]}}
+        ];
+        let arr2 = [
+            {a: 2, b: "A"},
+            {a: 6, b: {c: [1, 2, 3]}},
+            {a: 7, b: "A"},
+            {a: 9, b: {c: [1, 2, 3]}}
+        ];
+        //joining arr and arr2 
+        const joinArray = arr.concat(arr2);
+        //sorting arrays by sort function in ascending order
+        arraysorted = joinArray.sort(function (a, b) {return a["a"] - b["a"]})
+
+        const showTrueValue = (value) => {
+            if (arraysorted[value - 1]["b"] == "A") {
+                const element = document.createElement("div");
+                element.innerHTML = "True";
+                document.getElementById(value).appendChild(element);
+            }
+            else {
+                let listArray = arraysorted[value - 1]["b"]["c"];
+                for (let index = 0; index < listArray.length; index++) {
+                    const listElement = document.createElement("li");
+                    listElement.innerHTML = listArray[index];
+                    document.getElementById(value).appendChild(listElement);
+                }
+            }
+        }
+
+        for (const x of arraysorted) {
+
+            const buttonVal = document.createElement("button");
+            buttonVal.innerHTML = x["a"];
+            buttonVal.id = x["a"];
+            const element = document.getElementById("buttonGroup");
+            element.append(buttonVal);
+            buttonVal.onclick = (() => {showTrueValue(x["a"])});
+        }
+
+    </script>
+</body>
+
+</html>
