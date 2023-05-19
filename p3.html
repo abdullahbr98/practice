@@ -16,7 +16,7 @@
             onclick="breadcrumbsArrayPop()"> Back
         </div>
         <div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"
-            onclick="breadcrumbsMove()">
+            >
         </div>
 
         <input style="display:none;" id="nameChanger">
@@ -43,11 +43,12 @@
     </div>
 
     <script>
+        var recentFolderName = "";
         const breadcrumbsArray = [""];
         var random = Math.floor(Math.random() * 100000);
         var mainFolderName = "Folder";
         var directoryTree = {
-            "/Folder": `<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`
+            
         };
 
         const breadcrumbsArrayPop = () => {
@@ -60,10 +61,17 @@
             loadDirectory();
         }
 
+
+
         const createFolder = () => {
+            let folderNameId = Math.floor(Math.random() * 100000);
+            let hideId = Math.floor(Math.random() * 100000);
+            let randomId = Math.floor(Math.random() * 100000);
+            let inputDivId = Math.floor(Math.random() * 100000);
+            let inputId = Math.floor(Math.random() * 100000);
             let singleFolder = document.getElementById("singleFolder");
             let createDiv = document.createElement("div");
-            createDiv.innerHTML = (`<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`)
+            createDiv.innerHTML = (`<div class="directoryFolder" style="display: flex;" id=${randomId}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove(${folderNameId})"></div><div id=${inputDivId}><div style="display:none;" id=${hideId} ><input id=${inputId}/><div onclick="renameSingleFolderComplete(${randomId},${inputDivId},${folderNameId},${hideId})">ok</div></div><div style="margin-left: 10px; padding: 10px;" id=${folderNameId}>Folder</div></div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${randomId})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;" onclick="renameSingleFolder(${randomId},${inputDivId})">rename</div></div>`)
 
             //I will get the innerText and then use it as a key in directoryTree and add that 
             const element = document.getElementById("folderName");
@@ -71,11 +79,11 @@
             console.log(element);
             console.log(key);
             if (!directoryTree[key]) {
-                directoryTree[key] = [`<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`];
+                directoryTree[key] = [`<div class="directoryFolder" style="display: flex;" id=${randomId}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove(${folderNameId})"></div><div id=${inputDivId}><div style="display:none;" id=${hideId} ><input id=${inputId}/><div onclick="renameSingleFolderComplete(${randomId},${inputDivId},${folderNameId},${hideId})">ok</div></div><div style="margin-left: 10px; padding: 10px;" id=${folderNameId}>Folder</div></div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${randomId})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;" onclick="renameSingleFolder(${randomId},${inputDivId})">rename</div></div>`];
             }
             else {
                 let thisArray = directoryTree[key];
-                thisArray[thisArray.length] = `<div class="directoryFolder" style="display: flex;" id=${random}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove()"></div><div style="margin-left: 10px; padding: 10px;">Folder</div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${random})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;">rename</div></div>`;
+                thisArray[thisArray.length] = `<div class="directoryFolder" style="display: flex;" id=${randomId}><div style="cursor: pointer; background-color: yellow; height: 20px; width: 20px; padding: 10px;"onclick="breadcrumbsMove(${folderNameId})"></div><div id=${inputDivId}><div style="display:none;" id=${hideId} ><input id=${inputId}/><div onclick="renameSingleFolderComplete(${randomId},${inputDivId},${folderNameId},${hideId})">ok</div></div><div style="margin-left: 10px; padding: 10px;" id=${folderNameId}>Folder</div></div><div style="background-color:red; margin:5px; padding:3px; cursor: pointer;" onclick="deleteFolder(${randomId})">delete</div><div style="background-color:green; margin:5px; padding:3px;cursor: pointer;" onclick="renameSingleFolder(${randomId},${inputDivId})">rename</div></div>`;
                 directoryTree[key] = thisArray;
             }
             singleFolder.appendChild(createDiv);
@@ -96,10 +104,10 @@
         const loadDirectory = () => {
             const folderName = document.getElementById("folderName");
             const directoryFile = document.getElementById("folderDirectory");
-            console.log("new:",folderName);
+            console.log("new:", folderName);
             console.log(directoryTree[folderName.innerText]);
             if (directoryTree[folderName.innerText]) {
-                console.log("new:" , directoryTree[folderName.innerText]);
+                console.log("new:", directoryTree[folderName.innerText]);
                 directoryFile.innerHTML = directoryTree[folderName.innerText];
             }
         }
@@ -124,6 +132,35 @@
             loadDirectory();
         }
 
+        const renameSingleFolder = (tagId, divId) => {
+            const element = document.getElementById(tagId);
+            // console.log("TagId:",element);
+            const child = element.getElementsByTagName('div')[1];
+            const subChild = child.getElementsByTagName('div')[2]; //this has Folder Name
+            // child.innerText = "renamed"; 
+            const divElement = document.getElementById(divId);
+            const inputTag = divElement.getElementsByTagName('div')[0];
+            // console.log("divElementTag:",divElement);
+            inputTag.style = "display:block";
+            subChild.style = "display:none";
+        }
+
+        const renameSingleFolderComplete = (divId, inputId, folderId, hideId) => {
+            const divElement = document.getElementById(divId);
+            const inputElement = document.getElementById(inputId);
+            const inputValue = inputElement.getElementsByTagName('div')[0];
+            const inputTag = inputValue.getElementsByTagName('input')[0];
+            const folderName = document.getElementById(folderId);
+            const hideIdd = document.getElementById(hideId);
+            // console.log(inputTag.value); // this has the value
+            folderName.innerText = inputTag.value;
+            folderName.style = "display:block";
+            hideIdd.style = "display:none";
+            console.log(divElement);
+
+        }
+
+
         const renameFolderShow = (tagId) => {
             const id = tagId.id;
             const element = document.getElementById(id);
@@ -139,8 +176,14 @@
             singleFolder.innerHTML = breadcrumbsArray[tagId];
         }
 
-        const breadcrumbsMove = () => {
-            breadcrumbsArray.push("Folder");
+        const breadcrumbsMove = (folderId) => {
+            const folder = document.getElementById(folderId);
+            if (folder) {
+                breadcrumbsArray.push(folder.innerText);
+            }
+            else {
+                breadcrumbsArray.push("Folder");
+            }
             element = document.getElementById("breadcrumbs");
             element.innerHTML = breadcrumbsArray;
             const folderElement = document.getElementById("folderName");
