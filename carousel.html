@@ -1,0 +1,114 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="main" display="block">
+    <div>
+        <button onclick="mover(false)">previous</button>
+        <div id="carousel">
+        </div>
+        <button onclick="mover(true)">Next</button>
+    </div>
+    <label for="imageFiles">Choose a profile picture:</label>
+    <input type="file" id="imageFiles" name="avatar" accept="image/png, image/jpeg" onchange="upload(populateImages)"
+        multiple>
+    </div>
+    <button onclick="contentShow()" id="close-button" style="display: none;">x</button>
+    <div id="modal" style="display: none;">
+        <img src="/images/borrow.png" alt="" id="modalImage" srcset="" height="200px" width="200px">
+    </div>
+
+    <script>
+        var value = 0;
+    
+        const modalDiv = document.getElementById("modal");
+        modalDiv.style.backgroundColor="gray";
+        modalDiv.style.borderRadius = "10px";
+        modalDiv.style.width="80vw";
+        modalDiv.style.height="40vh";
+        modalDiv.style.textAlign="center";
+        modalDiv.style.paddingTop="100px";
+        
+        
+
+        const modal = (imageName)=>{
+            const element = document.getElementById("main");
+            const closer = document.getElementById("close-button");
+            const modalImage = document.getElementById("modalImage");
+            modalImage.setAttribute("src","/images/"+imageName);
+            modalDiv.style.display = "block";
+            element.style.display = "none";
+            closer.style.display = "block";
+            console.log("opacityset");
+        }
+        const contentShow = ()=>{
+            const element = document.getElementById("main");
+            element.style.display = "block";
+            modalDiv.style.display = "none";
+            const closer = document.getElementById("close-button");
+            closer.style.display = "none";
+        }
+    
+        const globalArray = [];
+        const upload = (callback) => {
+            const value = document.getElementById("imageFiles").files;
+            for (x of value) {
+                globalArray.push(x["name"]);
+            }
+            console.log(globalArray);
+            callback();
+        }
+
+        const populateImages = () => {
+            const carousel = document.getElementById("carousel");
+            const element = document.createElement("img");
+            element.setAttribute("src", "/images/" + globalArray[0]);
+            element.addEventListener("click",()=>{
+                modal(globalArray[value]);
+            })
+            console.log(element);
+            carousel.appendChild(element);
+        }
+
+        const mover = (flag) => {
+            const carousel = document.getElementById("carousel");
+            const child = carousel.getElementsByTagName("img")[0];
+            let index = 0;
+
+            if (globalArray.length > 1) {
+                if (flag) {
+                    if(value < (globalArray.length - 1)){
+                    child.setAttribute("src", "/images/" + globalArray[value + 1]);
+                    value++;
+                }
+                    else{
+                        child.setAttribute("src", "/images/" + globalArray[0]);
+                        value = 0;
+                    }
+                    
+                }
+                else{
+                    if(value==0){
+                        child.setAttribute("src", "/images/" + globalArray[globalArray.length-1]);
+                        value = globalArray.length - 1;
+                    }
+                    else{
+                        child.setAttribute("src", "/images/" + globalArray[value-1]);
+                        value--;
+                    }
+                }
+                console.log("if cond length:", child);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
