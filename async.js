@@ -27,7 +27,7 @@ var arr = [];
 const pushInArr = () => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            arr.push(3);
+            arr.push(Math.floor(Math.random() * 11));
             resolve("hello I am resolved");
             console.log("insidePushArr");
         }, 1);
