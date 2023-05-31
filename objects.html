@@ -1,0 +1,76 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objects</title>
+</head>
+
+<body>
+
+    <div id="demo">
+
+    </div>
+
+    <script>
+
+
+        // let x = "hello";
+
+        // const objectVal = {
+        //     name: "abdullah",
+        //     dshf: "sfdsf",
+        //     asfsd: "32523",
+        //     functionDef: () => {
+        //         console.log(this.location.href);
+        //     }
+        // }
+
+        // objectVal.functionDef();
+
+        // let arr = [1,1,2,4,4,5,3,5];
+        // let nonDuplicates = [];
+        // let duplicateIndex = 0;
+
+        // for(let val of arr){
+        //     let flag = false;
+        //     for(nonDuplicate of nonDuplicates){
+        //         if(nonDuplicate == val){
+        //             flag = true;
+        //             break;
+        //         }
+        //     }
+        //     if(!flag){
+        //         nonDuplicates.push(val);
+        //     }
+        // }
+
+
+        // console.log(nonDuplicates);
+
+        let arr = [1, 1, 2, 4, 4, 5, 3, 5];
+        let nonDuplicates = [];
+        let duplicateIndex = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            let flag = true;
+            for (let j = 0; j < nonDuplicates.length; j++) {
+                if (nonDuplicates[j] == arr[i]) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag == true) {
+                nonDuplicates.push(arr[i]);
+            }
+        }
+        console.log(nonDuplicates)
+
+
+
+
+    </script>
+</body>
+
+</html>
