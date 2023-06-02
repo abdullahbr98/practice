@@ -29,14 +29,14 @@ const pushInArr = () => {
         setTimeout(() => {
             arr.push(Math.floor(Math.random() * 11));
             resolve("hello I am resolved");
-            console.log("insidePushArr");
+            // console.log("insidePushArr");
         }, 1);
     });
 };
 
 const mainFunc = async () => {
     for (let indexArr3 in arr3) {
-        console.log(("index in arr", "[", indexArr3, "]", arr3[indexArr3]));
+        // console.log(("index in arr", "[", indexArr3, "]", arr3[indexArr3]));
         for (let indexArr in arr) {
             if (arr[indexArr]) {
                 console.log(
